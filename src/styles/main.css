@@ -94,7 +94,7 @@
     }
 
     .meta-icon {
-        @apply w-8 h-8 transition rounded-md flex items-center justify-center bg-[var(--btn-regular-bg)]
+        @apply w-3 h-3 transition rounded-md flex items-center justify-center 
         text-[var(--btn-content)] mr-2
     }
     .with-divider {
