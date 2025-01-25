@@ -31,11 +31,11 @@ draft: false
 ## 메모리 할당 실험: 기본형 데이터는 어디에 저장되는가?
 
 먼저 V8 엔진의 스택 크기를 확인해보자. 
-![image](/src/assets/images/js-datatype-2-image-1.png)
+![image](../../../assets/images/js-datatype-2-image-1.png)
 
 
 기본적으로 864KB가 할당된다. 
-![image](/src/assets/images/js-datatype-2-image-2.png)
+![image](../../../assets/images/js-datatype-2-image-2.png)
 
 
 
@@ -65,10 +65,10 @@ memoryUsed();
 
 실행 결과:
 - 할당 전: 3MB
-![image](/src/assets/images/js-datatype-2-image-3.png)
+![image](../../../assets/images/js-datatype-2-image-3.png)
 
 - 할당 후: 13MB
-![image](/src/assets/images/js-datatype-2-image.png)
+![image](../../../assets/images/js-datatype-2-image.png)
 
 
 힙 메모리 사용량이 정확히 10MB 증가했다. V8의 스택 크기가 864KB인 점을 고려하면, 이 큰 문자열은 힙에 할당되었음을 알 수 있다.
@@ -89,7 +89,7 @@ btn.addEventListener("click", () => {
 });
 ```
 
-![image](/src/assets/images/js-datatype-2-image-4.png)
+![image](../../../assets/images/js-datatype-2-image-4.png)
 
 
 버튼을 클릭했을 때 `foo`라는 문자열을 담은 변수가 2개 있으니 (string1, string2) 메모리를 할당하는 곳이 두 개이지 않을까 하지만 같은 문자열 데이터를 여러 번 메모리에 저장하는 대신 단일 복사본을 생성하고 여러 참조가 같은 데이터를 가리키도록 하는 방식으로 작동한다. V8 엔진은 문자열 인턴(string interning)이라는 최적화 기법을 사용한다. 동일한 문자열에 대해 여러 복사본을 만드는 대신, 하나의 복사본만 생성하고 여러 참조가 이를 가리키도록 한다. DevTools에서 'foo' @1169645라는 단일 메모리 주소를 확인할 수 있다.
