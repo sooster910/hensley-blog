@@ -32,8 +32,7 @@ draft: false
 ## 메모리 할당 실험: 기본형 데이터는 어디에 저장되는가?
 
 먼저 V8 엔진의 스택 크기를 확인해보자.
-<!-- ![image](../../../assets/images/js-datatype-2-image-1.png) -->
-![image](/src/assets/images/js-datatype-2-image-1.png)
+![image](../../../assets/images/js-datatype-2-image-1.png)
 
 기본적으로 864KB가 할당된다.
 ![image](../../../assets/images/js-datatype-2-image-2.png)
