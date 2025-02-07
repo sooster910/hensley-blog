@@ -5,7 +5,7 @@ description: "구조적으로 타입 호환성이 있는 객체 리터럴의 타
 image: "./freshness.png"
 tags: ["TypeScript"]
 category: TypeScript
-draft: true
+draft: false
 ---
 
 TypeScript를 쓰다 보면 이런 경험이 있다.
