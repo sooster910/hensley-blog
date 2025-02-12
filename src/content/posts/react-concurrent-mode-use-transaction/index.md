@@ -206,13 +206,6 @@ export const BookingClassForm = () => {
 ![](../../../assets/images/react-concurrent-mode-use-transition/performance.png)
 
 
-
-
-Relay에서는 
-
-Long Task는 렌더링(리액트 컴포넌트 리렌더링 + commit 과정에서 발생하는 동기 작업) 때문에 붙는 경우가 많습니다.
-
-
 ## ConcurrentMode에서 startTransition으로 Suspense 로딩 제어하기
 
 [nielsen norman group](https://www.nngroup.com/articles/progress-indicators/) 의 연구 결과에 따르면, 1초 미만 로딩시 루프 애니메이션 사용 시 산만함을 유발하므로 사용 비권장한다고 했으며, 리액트 팀에서도 공식문서에 jarring experience에 대해 좋지 않은 사용자 경험으로 언급해왔습니다.
