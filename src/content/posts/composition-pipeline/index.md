@@ -113,7 +113,7 @@ map(filter(books, (book)=> book.rating[0] > 4.5), ()=> ({ title:book.title, auth
 
 #### partial 도움 받기
 
-시나리오를 정해보자 회사 업무에서 많이 하던 기준값으로 레벨 및 카테고리화 하는 작업을 한다고 가정해보자.
+시나리오를 정해보자 실무에서 자주 다루는 기준값으로 레벨 및 카테고리화 하는 작업을 한다고 가정해보자.
 
 book.rating 을 세 분류 outstanding, good, bad로 나누고
 각각의 비즈니스 로직은 5 -outstanding, 4.5-good, 3.5-bad 라고 했을 때 다음과 같이 나눌 수 있다.
@@ -136,7 +136,7 @@ let projectTitle = (book)=> ({title:book.title})
 로직을 담당을 분리해 보자.
 
 1. book rating > 4.5 이상인지 확인 하는 함수
-2.
+2. 
 
 ### 마무리
 
