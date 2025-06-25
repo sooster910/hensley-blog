@@ -1,5 +1,5 @@
 ---
-title:내가 GraphQL을 선택한 이유<표준화의 중요성> 
+title: GraphQL을 선택한 이유-표준화 
 published: 2025-03-11
 description: ""
 image: "./graphql.png"
