@@ -1,5 +1,5 @@
 ---
-title: 이제야 말할 수 있는 “내가 GraphQL을 선택한 이유<표준화의 중요성>” 
+title:내가 GraphQL을 선택한 이유<표준화의 중요성> 
 published: 2025-03-11
 description: ""
 image: "./graphql.png"
@@ -10,10 +10,9 @@ draft: false
 
 ## 들어가며
 
-> 내가 풀고자 하는 문제는 명확했다.
->“표준”이다.
+가맹점 및 클래스 생성 관리, 주문예약 모바일 웹서비스를 구축할 수 있는 좋은 기회를 얻게 되었다. V0에는 런칭을 위한 핵심 기능 구현에 집중했었고, 런칭 후에도 기획들이 지속적으로 변경되면서 새로운 요구사항들이 계속 추가되었다.
 
-이 문제를 처음부터 그렇게 정의하진 못했다. 그 상태로 1년간 혼자서 어드민, 주문예약모바일 웹서비스, 백엔드API까지 구축했고 런칭 후 보니 여러 시스템을 동시에 개발하고 유지보수하는 과정에서 점차 생산성이 떨어지고, 피로도가 높아지는 문제를 겪게 되었다.
+
 ## 1. 문제 정의 
 ### 1.1. 3배의 반복 작업
 
@@ -132,18 +131,7 @@ API 응답 구조를 만든다.
 
 ## 2. GraphQL 도입
 
-### 2.1 첫 번째 도입은 실패의 교훈
-프로젝트 초기, 리드 개발자 분이 초기 환경 설정과 구조 설계를 도와주는 역할을 해주셨다.
-그 흐름에 맞춰 GraphQL로 개발을 시작했지만, 실제로 왜 써야 하는지에 대한 맥락과 철학은 이해하지 못한 채 따라가기만 했다.
-제품 출시일이 가까워지자, 결국 익숙한 REST API로 급히 전환했고, 몇 일 밤새워 전체 API를 다시 구성하는 일을 겪었다.
-그 후 1년간 혼자 개발하면서 문제를 체감하게 된 것이다.
-
-표준이 없는 타입 정의의 피로감
-UI 변경 = API 변경이라는 강결합
-점점 늘어나는 비슷한 API들의 관리 부담
-
-### 2.2 두 번째 도입은 이제 명확한 목표와 함께
-이번에는 해결하고 싶은 문제가 명확했다.
+### 2.1 문제에 대한 도전과제
 
 - 도메인 단위의 타입 일관성 유지 하기
 - UI 기획 변경이 API 구조 변경으로 이어지지 않도록 해보기
@@ -210,7 +198,7 @@ Relay는 매우 **opinionated**한 설계 철학을 가지고 있는데, 특히 
 >
 >
 >
-> Any GraphQL client for data-driven UI applications that does not have a strong opinion on making “fragments” the unit around which the user-interface components are built, is not leveraging key GraphQL design components nor setting you up for success with complex data-driven UI applications.
+> Any GraphQL client for data-driven UI applications that does not have a strong opinion on making "fragments" the unit around which the user-interface components are built, is not leveraging key GraphQL design components nor setting you up for success with complex data-driven UI applications.
 >
 
 또한가지는 컴파일러이다.
