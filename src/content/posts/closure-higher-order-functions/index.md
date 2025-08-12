@@ -1,6 +1,6 @@
 ---
 title: 클로저와 고차 함수
-published: 2025-03-11
+published: 2025-02-28
 description: "JavaScript의 클로저와 고차 함수 개념을 실제 프로젝트 경험을 통해 이해하기"
 image: "./closure.gif"
 tags: ["JavaScript", "함수형 프로그래밍", "클로저", "고차함수"]

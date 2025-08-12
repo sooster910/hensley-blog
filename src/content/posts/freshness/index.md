@@ -2,7 +2,7 @@
 title: TypeScript의 숨겨진 규칙, Freshness
 published: 2024-06-29
 description: "구조적으로 타입 호환성이 있는 객체 리터럴의 타입 검사를 쉽게 할 수 있도록 해주는 신선도(Freshness)개념"
-image: "./freshness.png"
+image: "./freshness.gif"
 tags: ["TypeScript"]
 category: TypeScript
 draft: false
