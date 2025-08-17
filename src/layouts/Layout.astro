@@ -60,7 +60,34 @@ function getAbsoluteImageUrl(imagePath: string): string {
   }
   
   // 상대 경로인 경우 (content 폴더 내 이미지)
-  return new URL(`/posts/${imagePath}`, Astro.site).href;
+  // ./image.png 형태의 상대 경로를 처리
+  const cleanPath = imagePath.replace(/^\.\//, '');
+  
+  // public 폴더에 이미지가 있는지 확인하고 우선 사용
+  const publicImagePath = `/posts/${cleanPath}`;
+  return new URL(publicImagePath, Astro.site).href.replace(/\/+/g, '/');
+}
+
+// 이미지 타입을 감지하는 함수
+function getImageType(imagePath: string): string {
+  if (!imagePath) return 'image/png';
+  
+  const extension = imagePath.split('.').pop()?.toLowerCase();
+  switch (extension) {
+    case 'jpg':
+    case 'jpeg':
+      return 'image/jpeg';
+    case 'png':
+      return 'image/png';
+    case 'gif':
+      return 'image/gif';
+    case 'webp':
+      return 'image/webp';
+    case 'svg':
+      return 'image/svg+xml';
+    default:
+      return 'image/png';
+  }
 }
 
 const enableBanner = siteConfig.banner.enable
@@ -108,9 +135,11 @@ const bannerOffset =
 		<meta property="og:description" content={description || pageTitle}>
 		{banner && (
 			<meta property="og:image" content={getAbsoluteImageUrl(banner)}>
+			<meta property="og:image:secure_url" content={getAbsoluteImageUrl(banner)}>
 			<meta property="og:image:width" content="1200">
 			<meta property="og:image:height" content="630">
 			<meta property="og:image:alt" content={pageTitle}>
+			<meta property="og:image:type" content={getImageType(banner)}>
 		)}
 		{setOGTypeArticle ? (
         <meta property="og:type" content="article" />
