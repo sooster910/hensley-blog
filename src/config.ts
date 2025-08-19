@@ -7,8 +7,8 @@ import type {
 import { LinkPreset } from './types/config'
 
 export const siteConfig: SiteConfig = {
-  title: 'Hensley',
-  subtitle: '블로그 blog',
+  title: 'FrontEnd Hyunsu Joo\'s Blog',
+  subtitle: 'FrontEnd Hyunsu Joo\'s Blog',
   lang: 'ko',         // 'en', 'zh_CN', 'zh_TW', 'ja', 'ko', 'es', 'th'
   themeColor: {
     hue:  260,         // Default hue for the theme color, from 0 to 360. e.g. red: 0, teal: 200, cyan: 250, pink: 345
@@ -52,8 +52,8 @@ export const navBarConfig: NavBarConfig = {
 
 export const profileConfig: ProfileConfig = {
   avatar: 'assets/images/hensley.png',  // Relative to the /src directory. Relative to the /public directory if it starts with '/'
-  name: 'Hensley ',
-  bio: 'Frontend Developer/블로그 이전 중',
+  name: 'Hyunsu Joo',
+  bio: 'Frontend Developer',
   links: [
     // {
     //   name: 'Twitter',
