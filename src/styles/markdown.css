@@ -86,16 +86,21 @@
         }
 
     }
+    
     /* 코드 라인 하이라이트 기능 */
-   /* 전체 코드 블록에 하이라이트된 줄이 있을 때만 아래 효과를 적용합니다. */
-    pre.astro-code .line:not(.highlighted) {
-    /* 글자를 흐릿하게 만듭니다. */
-    filter: blur(0.5px);
-    /* 투명도를 조절하여 흐리게 만듭니다. */
-    opacity: 0.4;
-  }
-  pre.astro-code .line.highlighted {
-    /* 하이라이트된 줄의 배경색 */
-    background-color: rgba(255, 255, 255, 0.15); 
-  }
+        /* Line highlighting and dimming styles */
+        .line {
+            @apply transition-opacity duration-200;
+        }
+
+        /* 하이라이트된 라인이 있는 코드 블록에서만 dimming 효과 적용 */
+        pre.astro-code:has(.line.highlighted) .line:not(.highlighted) {
+            @apply opacity-40;
+        }
+
+        /* 하이라이트된 라인은 밝게 표시 */
+        pre.astro-code .line.highlighted {
+            @apply opacity-100;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
 }
