@@ -1,7 +1,7 @@
 ---
 title:  TypeScript Module Resolution Algorithm & vite resolvePackageEntry
 published: 2025-08-20
-description: ""
+description: "`import` 문을 vite와 TypeScript의 모듈 해석 알고리즘에 의해 어떻게 불러오는지에 대한 과정"
 image: "./internal_vite.png"
 tags: ["vite", "resolvePackage"]
 category: FrontEnd
@@ -10,11 +10,11 @@ draft: false
 
 ## 들어가면서 
 
-배경은 최근 모노레포기반의 라이브러리를 배포했는데, vite react프로젝트에서 `module not found`에러를 발단으로 `import` 문을 vite와 TypeScript의 모듈 해석 알고리즘에 의해 어떻게 불러오는지, 그리고 TypeScript에서는 moduleResolution 설정에 왜 bundler를 지원하고, 앞으로 bundler로 적용해야 하는지 알 수 있습니다. 
+최근 모노레포 기반으로 작성한 라이브러리를 배포한 뒤, 이를 Vite+React 프로젝트에서 사용하면서 Module not found 에러가 발생하는 상황이 있었습니다. 해당 에러를 발단으로 `import` 문을 vite와 TypeScript의 모듈 해석 알고리즘에 의해 어떻게 불러오는지, 그리고 TypeScript에서는 moduleResolution 설정에 왜 bundler를 지원하고, 앞으로 bundler로 적용해야 하는지 알 수 있습니다. 
 
 ## TypeScript Module Resolution Algorithm 
 
-TypeScript의 moduleResolution 설정은 TypeScript 컴파일러가 import 구문을 만났을 때, 해당 모듈의 타입 정보를 찾기 위해 어떤 규칙을 사용할지를 정의합니다. 즉, TypeScript가 Fu의 타입을 알기 위해 Fubar라는 모듈의 타입 정의를 어디서 찾을지 결정하는 것이죠.
+TypeScript의 moduleResolution 설정은 TypeScript 컴파일러가 import 구문을 만났을 때, 해당 모듈의 타입 정보를 찾기 위해 어떤 규칙을 사용할지를 정의합니다. 
 
 ### Module Resolution Strategies
 
@@ -210,15 +210,11 @@ Vite는 설정된 mainFields 배열에 따라 순서대로 진입점을 탐색�
   실제 동작 예시
   json// package.json
   {
-    "browser": "dist/browser.js",    // ✅ 1순위로 선택됨
+    "browser": "dist/browser.js",    // 1순위로 선택됨
     "module": "dist/esm.js",         // ← 스킵됨  
     "main": "dist/cjs.js"            // ← 스킵됨
   }
 ```
-### 실제 파일이 존재하는지 확인 
-
-
-
 
 아래 예시와 코드처럼 실제 동작 로직도 확인할 수 있습니다.
 이 과정을 통해 구버전 라이브러리나 레거시 필드(main/module)를 지원할 수 있습니다.
@@ -240,24 +236,60 @@ if (!entryPoint) {
 
 ```
 
+### 실제 파일이 존재하는지 확인 
+
+TypeScript module resolution 과정에서도 실제 파일의 유무를 확인했듯이, vite 또한 마찬가지로 `fs.statSync`를 통해 실제 파일이 존재하는지까지 확인합니다.
+만약 파일이 존재하지 않으면 `module not found` 에러를 유발합니다.
+
+![](../../../assets/images/vite-internal-resolvePackage/file_exist.png)
 
 
+### pakcage.json 요약
 
-### 라이브러리 제작자 관점에서 package.json을 어떻게 작성해야할까? 
-
-#### exports를 이용한 ESM 지원만으로 충분할까?
-
+라이브러리 제작에서 package.json을 어떻게 작성해야할까? 
 Node.js 12+ (특히 14 이상)부터는 exports가 정식 지원되었고, Vite, Rollup, Webpack 등 최신 번들러는 exports를 우선적으로 사용합니다. 만약 사용자의 moduleResolution설정이 `bundler`, `nodenext` 라면 TypeScript도 exports 안의 "types" 맵을 인식할 수 있습니다.
+backward compatibility 고려한다면 main, module, types를 같이 둬서 안전하게 지원할 수 있도록 합니다. 
+
+```bash
+
+{
+  "main": "./dist/index.cjs.js",     // Node.js < 12, 구형 번들러
+  "module": "./dist/index.esm.js",   // 구형 번들러 ESM 지원  
+  "types": "./dist/index.d.ts",      // TypeScript < 4.7
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts", // ESM 전용 타입
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",   
+        "default": "./dist/index.cjs"   // CJS 전용 타입
+      }
+    }
+  }
+}
 
 
-#### 그런데 왜 main, module, types를 남기는 경우가 많을까?
+```
 
-일부 구버전 툴링은 exports를 인식하지 못하고 main/module만 찾음.
-예: 오래된 Jest, Storybook, Webpack 버전 등
-	•	타입 해석기:
-	•	TS 4.7 이전 버전은 `exports.types`를   제대로 지원하지 않음.
-	•	따라서 types 필드를 남겨둬야 TS가 타입을 잘 찾을 수 있음.
-	•	개발자 경험:
-	•	일부 IDE(특히 오래된 버전)는 여전히 main이나 types를 먼저 보려고 함.
+## 마무리 
 
-조금이라도 backward compatibility 고려한다면 main, module, types를 같이 둬서 안전망 확보하는것이 좋습니다.
+TypeScript는 타입 체크와 컴파일을, Vite는 번들링과 런타임 모듈 해석을 담당합니다. 도구의 역할과 경계를 명확히 이해해야 한다는 교훈을 줍니다. 문제가 발생했을 때 어느 레이어에서 발생한 것인지 정확히 파악할 수 있어야 효과적인 디버깅이 가능합니다. 
+
+또한 exports 필드가 Node.js 공식 표준이 되고, TypeScript와 번들러들이 이를 지원하게 되는 과정을 보면, 기술 표준의 중요성과 커뮤니티의 역할을 알 수 있습니다.
+
+도구의 동작 원리를 이해하고 사용자 경험과 기술적 복잡성의 균형을 고려하고 지속적으로 변화하는 생태계에 적응하는 것이 중요합니다.
+
+결국, 좋은 개발자는 단순한 사용법을 넘어서 근본적인 원리를 이해하고, 그것을 바탕으로 더 나은 솔루션을 만들어내는 사람이라고 할 수 있습니다.
+
+## 참고자료
+
+
+- **[TypeScript Module Resolution-TypeScript핸드북](https://www.typescriptlang.org/docs/handbook/module-resolution.html)** 
+- **[Node.js Package Exports-package export](https://nodejs.org/api/packages.html#exports)** 
+- **[Vite Configuration 공식문서](https://vitejs.dev/config/)**  
+- **[TypeScript Compiler Options - TypeScript핸드북](https://www.typescriptlang.org/tsconfig#moduleResolution)** 
+
+
+
