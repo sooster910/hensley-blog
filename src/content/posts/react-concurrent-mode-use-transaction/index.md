@@ -1,8 +1,8 @@
 ---
-title: Concurrent Mode 환경에서 Suspense 기반 데이터 페칭 최적화 및 로딩 경험 개선 (feat. Render as you Fetch & transition 원리)
+title: "Concurrent Mode 환경에서 Suspense 기반 데이터 페칭 최적화 및 로딩 경험 개선 feat. Render as you Fetch & transition 원리"
 published: 2025-02-01
-description: 응답성 개선 
-image: ""
+description: ""
+image: "./rendering.png"
 tags: ["React","Relay"]
 category: React
 draft: false
